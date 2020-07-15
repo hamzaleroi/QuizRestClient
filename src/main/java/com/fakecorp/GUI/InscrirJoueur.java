@@ -207,6 +207,7 @@ public class InscrirJoueur extends JFrame {
 	private void jouerMatch() {
         match = new MatchController();
 		match.setInfoJoueur(this.infoJoueur);
+		match.recoverData();
 		jouer = new JouerQuestion(match);
 		jouer.setVisible(true);
 	}
@@ -218,7 +219,8 @@ public class InscrirJoueur extends JFrame {
 	private void jouerMatch(File questions) {
 		match = new MatchController();
 		match.setInfoJoueur(this.infoJoueur);
-		match.setBanqueFichier(questions.getAbsolutePath());
+		System.out.println(questions.getAbsolutePath());
+		System.out.println(match.setBanqueFichier(questions.getAbsolutePath()));
 		jouer = new JouerQuestion(match);
 		jouer.setVisible(true);
 	}

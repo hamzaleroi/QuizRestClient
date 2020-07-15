@@ -88,25 +88,33 @@ public class QuizJeux extends JFrame {
 		txtrBienvenuDansLe.setBounds(10, 11, 534, 450);
 		panel.add(txtrBienvenuDansLe);
 		txtrBienvenuDansLe.setWrapStyleWord(true);
-		txtrBienvenuDansLe.setForeground(UIManager.getColor("MenuItem.foreground"));
-		txtrBienvenuDansLe.setBackground(UIManager.getColor("Panel.background"));
 		txtrBienvenuDansLe.setLineWrap(true);
-		txtrBienvenuDansLe.setFont(new Font("Gabriola", Font.BOLD, 15));
+		txtrBienvenuDansLe.setFont(new Font("Gabriola", Font.BOLD, 12));
 		txtrBienvenuDansLe.setEditable(false);
-		txtrBienvenuDansLe.setText("                                 BIENVENU DANS LE QUIZ\r\n" +
-				"Ceci est un mod\u00E8le simpliste d'un quiz desktop.\r\n" +
-				"Il sera utilis\u00E9 pour mettre en oeuvre des architetcures N-TIERs.\r\n\r\n" +
-				"1.CHOISIR LA BANQUE DE QUESTIONS A UTILISER (FORMAT CSV avec ;)\r\n" +
-				"(enonce;reponse1;reponse 2;reponse 3;reponse 4;indice reponse corecte; bar\u00E8me)\r\n" +
-				"2.INSCRIRIE LES INFORMATIONS DU JOUEUR\r\n3.LANCER LA PARTIE" +
-				"\n" +
-				"CHARGER: permet de charger les questions depuis la base données");
+		txtrBienvenuDansLe.setText(
+
+				"Pour charger une banque de question:\n\r\r\n" +
+						"                    -> "+
+				"1.CHOISIR LA BANQUE DE QUESTIONS A UTILISER \r\n" +
+						"Avec:\n\r" +
+						"1.FORMAT CSV avec , comme séparateur\r\n" +
+				"2.chaque ligne  du format : \n\r" +
+						"(enonce;reponse1;reponse 2;reponse 3;reponse 4;indice reponse corecte; bar\u00E8me)\r\n\r\n" +
+						"                    -> "+
+				"2.INSCRIRIE LES INFORMATIONS DU JOUEUR\r\n\r\n" +
+						"                    -> "+
+				"3.LANCER LA PARTIE" +
+				"\r\n\r\n" +
+				"Pour charger depuis la base données cliquez sur charger et les étapes 2 et 3");
+
+		txtrBienvenuDansLe.setBackground(Color.WHITE);
+		txtrBienvenuDansLe.setForeground(Color.BLACK);
 		btnLancement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// 1. ouvrir la banque de question
 				int bienDerouler=chargBanque();
 				// 2. inscrire le joueur (si tout va bien) au quiz
-				if (bienDerouler==0) return; else bienDerouler=inscJoueur();
+				if (bienDerouler==0) return; else bienDerouler=inscJoueur(bnQuest);
 			}
 		});
 
@@ -132,6 +140,13 @@ public class QuizJeux extends JFrame {
 	// inscrire le joueur 
 	private int inscJoueur() {
 		inscription= new InscrirJoueur();
+		inscription.setLocationRelativeTo(this);
+		inscription.setVisible(true);
+		return 1;
+	}
+	// inscrire le joueur
+	private int inscJoueur(File questions) {
+		inscription= new InscrirJoueur(questions);
 		inscription.setLocationRelativeTo(this);
 		inscription.setVisible(true);
 		return 1;

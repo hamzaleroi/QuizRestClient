@@ -22,10 +22,9 @@ public class MatchController {
 	 public  boolean estceBonneRep(int repElue){
 		 RestTemplate restTemplate = new RestTemplate();
 		 String fooResourceUrl
-				 = "http://localhost:8080/score";
-		 ResponseEntity<Boolean> response
-				 = restTemplate.getForEntity(fooResourceUrl , Boolean.class);
-		 return response.getBody();
+				 = "http://localhost:8080/estceBonneRep";
+		 return restTemplate.postForEntity(fooResourceUrl , repElue,Boolean.class).getBody();
+
 	 }
 
 
@@ -142,6 +141,12 @@ public class MatchController {
 
 		
 	}
-	 
 
+
+	public void recoverData() {
+		RestTemplate restTemplate = new RestTemplate();
+		String fooResourceUrl
+				= "http://localhost:8080/recoverData";
+		restTemplate.postForEntity(fooResourceUrl,null,String.class).getBody();
+	}
 }

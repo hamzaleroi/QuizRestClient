@@ -72,11 +72,6 @@ public class JouerQuestion extends JFrame {
 		
 		repList = new JComboBox<String>();
 		repList.setForeground(UIManager.getColor("ComboBox.foreground"));
-		repList.addItemListener(new ItemListener() {   // Une r�ponse est jou�e ...
-			public void itemStateChanged(ItemEvent arg0) {
-				evaluerReponse();
-			}
-		});
 		repList.setModel(new DefaultComboBoxModel<String>(new String[] {"", "", ""}));
 		repList.setBounds(21, 186, 517, 37);
 		getContentPane().add(repList);
@@ -89,6 +84,15 @@ public class JouerQuestion extends JFrame {
 		});
 		btnNewButton.setBounds(21, 234, 190, 23);
 		getContentPane().add(btnNewButton);
+
+		JButton validerBtn = new JButton("Valider");
+		validerBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				evaluerReponse();
+			}
+		});
+		validerBtn.setBounds(210, 234, 190, 23);
+		getContentPane().add(validerBtn);
 		
 		JButton btnNewButton_1 = new JButton("Arr\u00EAter");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -126,7 +130,7 @@ public class JouerQuestion extends JFrame {
 		evalReponse = new JTextArea();
 		evalReponse.setBackground(Color.GRAY);
 		evalReponse.setForeground(Color.BLACK);
-		//evalReponse.setBounds(158, 275, 203, 22);
+		evalReponse.setBounds(158, 275, 203, 22);
 		getContentPane().add(evalReponse);
         // on charge une premi�re question
 		chargerUneQuestion();
@@ -135,16 +139,18 @@ public class JouerQuestion extends JFrame {
 	private void chargerUneQuestion() {
 		String [] questCour = match.tirerQuestion();        // pr�parer le conteneur (tableau)
 		if (questCour==null) { bnqEpuisee(); return; }  // soit la banque est epuis�e soit elle vide...
-  		String [] repQstCour = new String [questCour.length-2];
-		cntntQuest.setText(questCour[0]);                                         // la question (�nonc�)
-		for (int i=0; i<questCour.length-2;i++) repQstCour[i]=questCour[i+2];    // les r�ponses possibles dans la liste d�roulante
+  		String [] repQstCour = new String [questCour.length-1];
+		cntntQuest.setText(questCour[0]);
+		// la question (�nonc�)
+		repQstCour[0] = "";
+		for (int i=0; i<questCour.length-2;i++) repQstCour[i+1]=questCour[i+2];    // les r�ponses possibles dans la liste d�roulante
 		repList.setModel(new DefaultComboBoxModel<String>(repQstCour));           //mise en liste d�roulante
 	    repList.setBackground(Color.WHITE);
       	repList.setForeground(Color.BLACK);
       	repList.setEnabled(true);
       	evalReponse.setBackground(Color.GRAY);
       	evalReponse.setText("");
-      	//evalReponse.setVisible(false);
+      	evalReponse.setVisible(true);
 	    nQuest.setText(String.valueOf(match.getCptQstJouee()));                    //num�ro de la question
 	    scorQuest.setText(String.valueOf(questCour[1]));                           // le bar�me
 	    totalScroe.setText(String.valueOf(match.getScore()));                     // le score cummul� du joueur
@@ -155,8 +161,11 @@ public class JouerQuestion extends JFrame {
 	 // �valuer la r�ponse du joueur: si vrai incr�menter le score sinon afficher un message d'erreur et passer � la suivante
 		private void evaluerReponse() {
 			match.incCptQstJouee();                                //comptabiliser la question
-			repList.setEnabled(false);                             //ne pas permettre une autre tentative
-			if (match.estceBonneRep(repList.getSelectedIndex())) {   // cas de r�ponse juste
+			repList.setEnabled(false);
+
+			//ne pas permettre une autre tentative
+
+			if (match.estceBonneRep(repList.getSelectedIndex()-1)) {   // cas de r�ponse juste
 				totalScroe.setText(String.valueOf(match.getScore()));    // le score cummul� du joueur
 				repList.setBackground(Color.GREEN);
 	          	repList.setForeground(Color.WHITE);
